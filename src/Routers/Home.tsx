@@ -8,6 +8,30 @@ const sliderVar = {
     animate: { x: 0 },
     exit: { x: "calc(-100% - 0.25rem)" },
 };
+const boxVar = (isFirst: boolean, isLast: boolean) => ({
+    initial: {
+        scale: 1,
+        transformOrigin: isFirst
+            ? "left center"
+            : isLast
+            ? "right center"
+            : "center center",
+    },
+    hover: {
+        scale: 1.3,
+        y: -50,
+        transformOrigin: isFirst
+            ? "left center"
+            : isLast
+            ? "right center"
+            : "center center",
+        transition: { type: "tween", delay: 0.5, duration: 0.3 },
+    },
+});
+const titleVar = {
+    initial: { opacity: 0 },
+    hover: { opacity: 1, transition: { delay: 0.5, duration: 0.3 } },
+};
 
 const offset = 6;
 
@@ -28,7 +52,6 @@ export default function Home() {
         }
     };
     const toggleEnd = () => setisEnd((prev) => !prev);
-    console.log(data);
     return (
         <>
             {isLoading ? (
@@ -71,20 +94,37 @@ export default function Home() {
                                         index * offset,
                                         index * offset + offset
                                     )
-                                    .map((movie) => (
-                                        <motion.div
-                                            key={movie.id}
-                                            className="text-white h-48 bg-cover bg-center"
-                                            style={{
-                                                backgroundImage: `url(${getImages(
-                                                    movie.backdrop_path || "",
-                                                    "w500"
-                                                )})`,
-                                            }}
-                                        >
-                                            {movie.title}
-                                        </motion.div>
-                                    ))}
+                                    .map((movie, i, array) => {
+                                        const isFirst = i === 0;
+                                        const isLast = i === array.length - 1;
+                                        return (
+                                            <motion.div
+                                                variants={boxVar(
+                                                    isFirst,
+                                                    isLast
+                                                )}
+                                                initial="initial"
+                                                whileHover="hover"
+                                                transition={{ type: "tween" }}
+                                                key={movie.id}
+                                                className="text-white h-48 bg-cover bg-center"
+                                                style={{
+                                                    backgroundImage: `url(${getImages(
+                                                        movie.backdrop_path ||
+                                                            "",
+                                                        "w500"
+                                                    )})`,
+                                                }}
+                                            >
+                                                <motion.div
+                                                    variants={titleVar}
+                                                    className="p-2 bg-inherit absolute w-full bottom-0 text-white text-center"
+                                                >
+                                                    {movie.title}
+                                                </motion.div>
+                                            </motion.div>
+                                        );
+                                    })}
                             </motion.div>
                         </AnimatePresence>
                     </div>
