@@ -8,3 +8,12 @@
   --color-white-first: #fff;
   --color-white-second: #e5e5e5;
 }
+
+@layer components {
+  .boxes > *:first-child {
+    transform-origin: left center;
+  }
+  .boxes > *:last-child {
+    transform-origin: right center;
+  }
+}

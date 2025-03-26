@@ -42,7 +42,9 @@ export default function Header() {
   return (
     <div
       className={`flex fixed ${
-        isScroll ? "bg-black-first" : "bg-inherit"
+        isScroll
+          ? "bg-gradient-to-b from-black-first to-black-first"
+          : "bg-gradient-to-b from-black to-inherit"
       } text-white w-full px-14 py-5 text-sm items-center justify-between transition-colors duration-500`}
     >
       <div className="flex gap-5 items-center">
